@@ -1,0 +1,10 @@
+audio_mp3
+audio_wav
+video_mp4
+combined_transcripts
+diarization_results
+local_diarization_model
+transcripts_whisper
+venv_whisper
+venv_diarization
+.env

@@ -1,0 +1,8 @@
+torch==2.2.0+cu118
+torchaudio==2.2.0+cu118
+pyannote-audio==3.3.2
+tqdm==4.66.4
+python-dotenv==1.0.1
+soundfile==0.12.1
+numpy==1.26.4
+moviepy

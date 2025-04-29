@@ -1,0 +1,8 @@
+faster-whisper
+torch
+torchaudio
+torchvision
+tqdm
+python-dotenv
+soundfile
+moviepy
