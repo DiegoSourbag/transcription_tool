@@ -76,12 +76,17 @@ def main():
     for transcript_file in transcript_files:
         filename_stem = transcript_file.stem
         diarization_file = DIARIZATION_FOLDER / f"{filename_stem}_diarization.txt"
+        output_file = COMBINED_FOLDER / f"{filename_stem}_combined.txt"
+
+        if output_file.exists():
+            print(f"⏭️ Skipping {filename_stem}, combined file already exists.")
+            continue
 
         if diarization_file.exists():
-            output_file = COMBINED_FOLDER / f"{filename_stem}_combined.txt"
             combine_files(transcript_file, diarization_file, output_file)
         else:
             print(f"⚠️ Diarization file missing for {filename_stem}, skipping.")
+
 
 
 if __name__ == "__main__":
