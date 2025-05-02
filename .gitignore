@@ -8,3 +8,4 @@ transcripts_whisper
 venv_whisper
 venv_diarization
 .env
+combined_transcripts_pdfs
