@@ -72,7 +72,7 @@ def process_file(pipeline, file_path, output_folder):
 
         print(f"\n🧍 Diarizing {file_to_use.name}...")
         diarization_start = time.time()
-        annotation = pipeline({"audio": str(file_to_use)})
+        annotation = pipeline({"audio": str(file_to_use), "num_speakers": 3})
         diarization_end = time.time()
 
         with open(output_path, "w") as f:

@@ -1,31 +1,53 @@
 from pathlib import Path
 from reportlab.lib.pagesizes import A4
-from reportlab.pdfgen import canvas
 from reportlab.lib.units import cm
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 
 # Folder paths
 COMBINED_FOLDER = Path("combined_transcripts")
 PDF_OUTPUT_FOLDER = Path("combined_transcripts_pdfs")
 PDF_OUTPUT_FOLDER.mkdir(exist_ok=True)
 
+# Styles
+styles = getSampleStyleSheet()
+normal_style = ParagraphStyle(
+    'NormalWithSpacing',
+    parent=styles['Normal'],
+    fontSize=11,
+    leading=14,
+    spaceAfter=6,
+)
+
+speaker_style = ParagraphStyle(
+    'Speaker',
+    parent=styles['Normal'],
+    fontSize=12,
+    leading=16,
+    spaceBefore=10,
+    spaceAfter=4,
+    fontName='Helvetica-Bold',
+)
+
 def create_pdf_from_txt(txt_path, pdf_path):
     with txt_path.open("r", encoding="utf-8") as f:
         lines = f.readlines()
 
-    c = canvas.Canvas(str(pdf_path), pagesize=A4)
-    width, height = A4
-    x, y = 2 * cm, height - 2 * cm
-    line_height = 12  # Points
+    doc = SimpleDocTemplate(str(pdf_path), pagesize=A4,
+                            rightMargin=2*cm, leftMargin=2*cm,
+                            topMargin=2*cm, bottomMargin=2*cm)
+    elements = []
 
     for line in lines:
-        if y < 2 * cm:
-            c.showPage()
-            y = height - 2 * cm
+        stripped = line.strip()
+        if not stripped:
+            continue
+        elif stripped.startswith("@"):
+            elements.append(Paragraph(stripped[1:], speaker_style))  # Speaker name
+        else:
+            elements.append(Paragraph(stripped, normal_style))       # Dialogue
 
-        c.drawString(x, y, line.strip())
-        y -= line_height
-
-    c.save()
+    doc.build(elements)
     print(f"📄 PDF created: {pdf_path.name}")
 
 def main():
